@@ -1,5 +1,7 @@
-import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Patch, Post, Query, ValidationPipe } from "@nestjs/common";
 import { CreateuserDto } from "./dtos/create-user.dto";
+import { GetUsersParamsDto } from "./dtos/get-users-params.dto";
+import { PatchUserDto } from "./dtos/patch-user.dto";
 
 // https://localhost:3000/users
 
@@ -15,8 +17,8 @@ export class UsersController {
     }
 
     @Get('/:id')
-    public getUserById(@Param('id',ParseIntPipe) id: number ){
-        return `Response for get users request with id ${id}`
+    public getUserById(@Param() getUsersParamsDto: GetUsersParamsDto ){
+        return `Response for get users request with id ${getUsersParamsDto.id}`
     }
 
     @Post()
@@ -24,6 +26,13 @@ export class UsersController {
         return {
             reqBody,
             message: `User created successfully`
+        }
+    }
+
+    @Patch()
+    public patchUser(@Body() patchUserDto: PatchUserDto){
+        return {
+            patchUserDto
         }
     }
 

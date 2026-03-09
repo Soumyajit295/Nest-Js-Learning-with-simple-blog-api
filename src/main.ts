@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe(
     {
       whitelist: true, // If any extra key value pair in request body then it does not send the extra to the controller
-      forbidNonWhitelisted: true // This throws an error if req body contain extra key value pair
+      //forbidNonWhitelisted: true // This throws an error if req body contain extra key value pair
     }
   ))
   
