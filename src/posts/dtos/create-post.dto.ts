@@ -1,11 +1,11 @@
 import { 
   IsArray, IsEnum, IsISO8601, IsJSON, IsNotEmpty, 
-  IsOptional, IsString, MinLength, ValidateNested 
+  IsOptional, IsString, MaxLength, MinLength, ValidateNested 
 } from "class-validator";
 
 import { PostTypeEnum } from "../enums/post-type.enum";
 import { PostStatus } from "../enums/post-status.enum";
-import { CreatePostMetaOptionDto } from "./create-post-metaOption.dto";
+import { CreatePostMetaOptionDto } from "../../meta-options/dtos/create-post-metaOption.dto";
 import { Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -15,6 +15,7 @@ export class CreatePostDto {
   @IsNotEmpty()
   @MinLength(3, { message: 'Title should be greater than 2 characters long' })
   @ApiProperty()
+  @MaxLength(512)
   title: string;
 
   @IsEnum(PostTypeEnum)
@@ -25,6 +26,7 @@ export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
+  @MaxLength(256)
   slug: string;
 
   @IsEnum(PostStatus)
@@ -43,12 +45,15 @@ export class CreatePostDto {
 
   @IsString()
   @ApiProperty()
-  featuredImageUrl: string;
+  @MaxLength(1024)
+  @IsOptional()
+  featuredImageUrl?: string;
 
   @IsISO8601()
   @IsOptional()
   @ApiProperty()
-  publishOn: Date;
+  @IsOptional()
+  publishOn?: Date;
 
   @IsOptional()
   @IsArray()
@@ -61,5 +66,5 @@ export class CreatePostDto {
   @ValidateNested({ each: true })
   @Type(() => CreatePostMetaOptionDto)
   @ApiProperty()
-  metaOptions?: CreatePostMetaOptionDto[];
+  metaOptions?: CreatePostMetaOptionDto | null;
 }

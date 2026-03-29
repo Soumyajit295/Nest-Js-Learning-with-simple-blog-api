@@ -46,10 +46,7 @@ export class UsersController {
 
     @Post()
     public createUser(@Body() reqBody: CreateuserDto){
-        return {
-            reqBody,
-            message: `User created successfully`
-        }
+        return this.usersService.createUser(reqBody)
     }
 
     @Patch()
