@@ -19,22 +19,44 @@ export class PostsService{
     ){}
 
     public async createPost(createPostDto: CreatePostDto){
+        // Find author by authorId
+        
         let post = this.postRepository.create({
             ...createPostDto,
+            author: {id: createPostDto?.authorId},
             metaOptions: createPostDto.metaOptions ?? undefined,
             tags: createPostDto.tags?.join(','),
         });
+
         return await this.postRepository.save(post)
     }
 
     public async findAll(){
         return await this.postRepository.find({
             relations: {
-                metaOptions: true
+                metaOptions: true,
+                author: true
+            },
+            select: {
+                id: true,
+                title: true,
+                slug: true,
+                content: true,
+                tags: true,
+
+                author: {
+                    id: true,
+                    email: true,
+                    firstName: true
+                },
+
+                metaOptions: {
+                    id: true,
+                    metaValue: true
+                }
             }
         })
     }
-
     public async delete(id: number){
         await this.postRepository.delete(id)
 
